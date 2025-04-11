@@ -15,9 +15,5 @@ public class NettyConfig {
         return new NioEventLoopGroup();
     }
 
-    @PreDestroy
-    public void shutdown(EventLoopGroup group) {
-        group.shutdownGracefully();
-    }
 }
 

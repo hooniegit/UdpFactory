@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import com.hooniegit.NettyDataProtocol.netty.UdpSender;
@@ -18,18 +19,18 @@ public class UdpService {
         this.udpSender = udpSender;
     }
 
-    public void processAndSend(List<SuperData> input, List<Integer> idList) {
-        Set<Integer> idSet = new HashSet<>(idList);
+    @PostConstruct
+    public void processAndSend() {
+        List<SuperData> prop1List = new ArrayList<>();
 
-        List<String> prop1List = new ArrayList<>();
-        for (SuperData data : input) {
-            if (idSet.contains(data.getId())) {
-                prop1List.add(data.getProp1());
-            }
+        for (int i = 0; i < 2000; i++) {
+            SuperData data = new SuperData(i, "prop1_" + i);
+            prop1List.add(data);
         }
 
         try {
-            udpSender.send(prop1List, "192.168.0.101", 5000);
+            udpSender.send(prop1List, "localhost", 5000);
+            System.out.println("Data sent successfully: " + prop1List.size());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -32,13 +32,5 @@ public class UdpServer {
         System.out.println("✅ UDP Server started on port 5000");
     }
 
-    @PreDestroy
-    public void stop() {
-        if (channel != null) {
-            channel.close();
-        }
-        group.shutdownGracefully();
-        System.out.println("🛑 UDP Server stopped");
-    }
 }
 

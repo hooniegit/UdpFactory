@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import com.hooniegit.NettyDataProtocol.test.SuperData;
 import org.springframework.stereotype.Component;
 
 import io.netty.bootstrap.Bootstrap;
@@ -16,6 +17,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import jakarta.annotation.PreDestroy;
+
+import com.hooniegit.Xerializer.Serializer.KryoSerializer;
 
 @Component
 public class UdpSender {
@@ -47,16 +50,21 @@ public class UdpSender {
         }
     }
 
-    public void send(List<String> dataList, String host, int port) {
-        String payload = String.join(",", dataList);
-        ByteBuf buf = Unpooled.copiedBuffer(payload, StandardCharsets.UTF_8);
+    public void send(List<SuperData> dataList, String host, int port) {
+        try {
+            byte[] serializedBytes = KryoSerializer.serialize(dataList); // Kryo 직렬화
+            ByteBuf buf = Unpooled.wrappedBuffer(serializedBytes);
 
-        DatagramPacket packet = new DatagramPacket(buf, new InetSocketAddress(host, port));
-        channel.writeAndFlush(packet).addListener(future -> {
-            if (!future.isSuccess()) {
-                System.err.println("❌ Failed to send UDP packet: " + future.cause());
-            }
-        });
+            DatagramPacket packet = new DatagramPacket(buf, new InetSocketAddress(host, port));
+            channel.writeAndFlush(packet).addListener(future -> {
+                if (!future.isSuccess()) {
+                    System.err.println("❌ Failed to send UDP packet: " + future.cause());
+                }
+            });
+
+        } catch (Exception e) {
+            System.err.println("❌ Failed to serialize data for UDP: " + e.getMessage());
+        }
     }
 
     @PreDestroy

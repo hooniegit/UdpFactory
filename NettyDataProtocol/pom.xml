@@ -13,19 +13,15 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>NettyDataProtocol</name>
 	<description>Demo project for Spring Boot</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+
+	<repositories>
+		<repository>
+			<id>nexus</id>
+			<name>Nexus Repository</name>
+			<url>http://workspace:18081/repository/maven-releases/</url>
+		</repository>
+	</repositories>
+
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -41,11 +37,13 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -57,6 +55,13 @@
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
 			<version>4.1.108.Final</version>
+		</dependency>
+
+		<!-- Xerializer -->
+		<dependency>
+			<groupId>com.hooniegit</groupId>
+			<artifactId>Xerializer</artifactId>
+			<version>0.1.0</version>
 		</dependency>
 
 	</dependencies>
